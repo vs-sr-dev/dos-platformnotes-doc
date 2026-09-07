@@ -182,6 +182,55 @@ Two consequences worth carrying:
    fixups. A Turbo Pascal program has hundreds; a packed image declares none,
    because the packer's stub applies them itself.
 
+### 2a. And when `e_lfanew` points at a signature, the arithmetic describes the stub `[2 objects]`
+
+The rule above has a case where it is still correct and no longer *useful*, and
+it is worth separating because the same column reports two unrelated
+quantities.
+
+**If the `u32` at `0x3C` points inside the file and the bytes there are `NE`,
+`LE`, `LX` or `PE\0\0`, the MZ header is describing a stub.** Everything the
+`img` arithmetic calls "beyond the declared image" is then the actual program,
+not an appendix, and reporting it beside
+[pc-hugoshouseofhorrors-doc](https://github.com/vs-sr-dev/pc-hugoshouseofhorrors-doc/blob/master/docs/04-the-executable.md)'s
+nine appended bytes puts a whole executable and a nine-byte curiosity under one
+heading.
+
+[pc-themepark-doc/docs/09](https://github.com/vs-sr-dev/pc-themepark-doc/blob/master/docs/09-the-programs.md)
+`[1 object]` has three files of one game where the quantity reads **+830,805**,
+**+168,885** and **+80,340**:
+
+```
+python tools/mz.py <GAME/MAIN.EXE>
+  pages x 512 + last page    : (21 - 1) * 512 + 178 = 10418
+  against the file length    : 841223  residue +830805
+  e_lfanew points at 0x28B8, where the signature is b'LE'
+```
+
+All three carry the **same byte-identical 10,424-byte stub**, which is what a
+Watcom link against DOS/4GW produces, and all three then hold an `LE` linear
+executable that accounts for the rest of the file exactly — 661,511, 143,463
+and 65,670 bytes of page data, residue **0** on each, read with that
+repository's `tools/le.py`. The stub's whole job is to print a message when the
+program is run without an extender.
+
+[pc-samandmaxhittheroad-doc](https://github.com/vs-sr-dev/pc-samandmaxhittheroad-doc)
+`[+1 object]` has **thirteen** linear executables at the same `0x28B8`, and its
+`DOS4GW.EXE` is 254,196 bytes against *Theme Park*'s 265,396 — two versions of
+Rational Systems' extender, in two repositories, one diff apart.
+
+**The check is one line and `tools/mz.py` already does it**: it reads `0x3C`,
+looks for the four signatures, and names the one it finds. What no copy of
+`mzcensus.py` does is suppress or relabel `overlay past image` when that
+signature is present, and until one does, the column means two things.
+
+**The prior art is real and this document says so rather than implying the
+family had never opened one.** `pc-hurl-doc/tools/hurlle.py` is a working LE
+loader — object mapping, `dis`, `xref`, `func`, `strings` — written against one
+object; `pc-themepark-doc/tools/le.py` is a second, generic one that cites it.
+Two independent implementations in the family is the threshold at which an item
+belongs here rather than in a repository.
+
 ## 3. After unpacking, the relocation table is the only content check `[5 objects, the defect on 1]`
 
 **Length arithmetic cannot see a hole.** EXEPACK relocates the packed data to

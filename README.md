@@ -60,7 +60,7 @@ it says `[1 object]` next to that item and does not round up. Two of the six do.
 | # | item | support |
 |---|---|---|
 | 1 | The tool you have is not the tool you remember | `[5 objects]` — five copies of `exepack.py`, five distinct files, three different command lines |
-| 2 | The declared image is not the file | `[27 of 51]`, 28 copies of `mzcensus.py` in two versions, and the first non-zero `overlay past image` `[1 object]` |
+| 2 | The declared image is not the file | `[27 of 51]`, 28 copies of `mzcensus.py` in two versions, and the first non-zero `overlay past image` `[1 object]` — plus **2a**, the bound-`LE` case where the arithmetic describes only the stub `[2 objects]` |
 | 3 | After unpacking, the relocation table is the only content check | `[5 objects]`, the defect itself `[1 object]` |
 | 4 | A reader that refuses is worth more than a reader that answers | `[5 objects, 3 families]`, `[8 of 107]`, plus `[2 objects]` for a census whose denominator is its filter's — one of them showing both halves of that defect on one tree — and `[1 object]` for a census that renders a Python exception in a data column and exits 0 |
 | 5 | DOS timestamps have two-second granularity | `[22 of 49]`, both halves of the question closed |
