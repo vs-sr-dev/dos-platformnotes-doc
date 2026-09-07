@@ -81,7 +81,7 @@ There are no `[unverified]` marks. Instead:
 
 `[n of 49]` is weaker than `[n objects]`: mentioning a term is not doing the
 work. Where both are available both are given. The denominator is the machine's,
-not the family's — `pc-gamelist-doc` lists **58** titles and the remote holds
+not the family's — `pc-gamelist-doc` lists **61** titles and the remote holds
 more `pc-*` repositories than either number. `tools/sweep.py` prints the
 denominator it used, and a figure quoted without one is not a figure.
 
@@ -372,7 +372,7 @@ where each packer stopped. **What would close it:** re-running the corrected
 copy against the four objects and comparing.
 
 **Q2 — is `[n of 49]` measuring the family or the machine?** The denominator is
-repositories present where the sweep runs. `pc-gamelist-doc` lists 58 titles and
+repositories present where the sweep runs. `pc-gamelist-doc` lists 61 titles and
 the remote holds more `pc-*` repositories than that; twelve of the listed titles
 have no directory on the machine this sweep ran on. **What would close it:** a
 sweep that reads the remote rather than the working copy.
