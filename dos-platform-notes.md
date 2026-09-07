@@ -352,7 +352,7 @@ across every file is **one copy operation recorded n times, not n observations**
 — and an installer or a storefront that rewrites every mtime into a six-minute
 window leaves a filesystem that dates the *download* and nothing else.
 
-## 6. State the chance rate before quoting the count, and say which way it runs `[4 of 49]`
+## 6. State the chance rate before quoting the count, and say which way it runs `[4 of 49]` `[+1 object, the rate as a floor]`
 
 A needle count means nothing without the rate at which that needle occurs by
 accident in a population of that size, and **the rate has to be declared before
@@ -372,6 +372,47 @@ per 4,294,967,296 bytes — so **a single four-byte hit is a finding**, where th
 same hit on a seven-gigabyte install is noise. The inversion is `[1 object]`;
 the discipline is `[4 of 49]`, and four of forty-nine is the honest statement
 that this is the exception rather than the habit.
+
+**And there is a third case, at the opposite end of the same axis, which is
+that on large structured data the rate is a FLOOR and not a ceiling.** A DOS
+object is small enough that a four-byte hit is a finding; an object of a few
+gigabytes is large enough that the uniform model predicts a handful of hits --
+and the *observed* count runs well above the model, because packed data is not
+uniform and every position in a multi-byte pattern is correlated with the
+others.
+
+```
+python _work/abspaths.py <the 22 containers>          (pc-inquisitor-doc)
+
+pattern [A-Za-z]:\ + four or more path characters
+bytes scanned                     2,321,841,673
+uniform-random expectation             35.8255
+observed                                   174     = 4.86 x the model
+```
+
+Every one of the 174 is garbage inside compressed texture and audio data --
+`J:\JJJX`, `Y:\4RPP`, `r:\SQRB_RSs` -- while the same pattern over the same
+object's 3.1 MB executable returns **one** match and it is real. The same
+effect on a four-byte needle, measured on the container magic that session
+derived: **five accidental `DRPK` against an expectation of 0.5466, and one of
+the five is inside a PDF.**
+
+So the discipline has three parts and not two: **state the rate, then say which
+way it runs, then say what the hit is.** A session that computes 35.8 and
+concludes that 174 must therefore mean something has made the same mistake as a
+session that never computed it, one step later. The instance that prompted this
+is `mzcensus.py` reporting `LZEXE 0.91` inside a 160 MB texture container on an
+object with no DOS program on it at all -- a four-byte needle, a model of
+0.5466 over the population the tool actually searched, and one observed hit,
+which is what chance produces
+([pc-inquisitor-doc/docs/14](https://github.com/vs-sr-dev/pc-inquisitor-doc/blob/master/docs/14-the-chance-rate.md)).
+**That object is Win32 and not DOS**, and it is here for the same reason the
+Win9x `KERNEL32` instance above is: this section is about arithmetic, and the
+only part of it that is era-specific is the paragraph that says so. The
+`[4 of 49]` mark above is left as it stands because it was counted at a
+denominator of 49 and has not been re-counted at one; `sweep.py` on the
+machine that added this reports **8 of 53** repositories stating a rate, on a
+different denominator, and the two figures are not the same measurement.
 
 The other objects that state a rate before a count:
 [pc-megaman-doc/docs/07](https://github.com/vs-sr-dev/pc-megaman-doc/blob/master/docs/07-blk-the-tile-banks.md)
