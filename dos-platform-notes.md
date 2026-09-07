@@ -414,6 +414,36 @@ denominator of 49 and has not been re-counted at one; `sweep.py` on the
 machine that added this reports **8 of 53** repositories stating a rate, on a
 different denominator, and the two figures are not the same measurement.
 
+**The same tool made the same false positive a second time, on a different
+object, and the second one added a part to this discipline that the first could
+not.** `mzcensus.py` reported `LZEXE 0.91` inside a 279,883,198-byte Unity asset
+bundle on a 2023 Windows game with no DOS program on it at all
+([pc-themurderofsonicthehedgehog-doc/docs/15](https://github.com/vs-sr-dev/pc-themurderofsonicthehedgehog-doc/blob/master/docs/15-the-tools.md)).
+That session computed the rate three ways over the 468,913,725 bytes the tool
+actually scans, and **the first two ways were both wrong in the same
+direction**:
+
+```
+uniform model, 4-byte needle       expected 0.109177   observed 1   =  9.16 x
+independent bytes, this corpus's
+  own measured frequencies         expected 0.0228     observed 1   = 43.85 x
+240 control needles of the same
+  shape (two letters, two digits)  20 of 240 score 1 or more; one scores 10
+                                   -> LZ91 is in the top 8.33 % of pure noise
+```
+
+The better model made the hit look **more** significant, because `Z` and `9` are
+rarer than uniform in that corpus. Only the measured control distribution
+settled it.
+
+**So the fourth part of the discipline is a direction.** Arguing a count is
+*above* chance is robust to a bad model, because a bad model errs low. Arguing a
+count is *within* chance is not, and it needs a control distribution of needles
+of the same shape over the same bytes rather than a closed-form rate. **A rate
+is enough to raise a finding and is not enough to dismiss one.** That is stated
+for the toolbox rather than for DOS, and the era-specific part of it is this
+sentence saying so.
+
 The other objects that state a rate before a count:
 [pc-megaman-doc/docs/07](https://github.com/vs-sr-dev/pc-megaman-doc/blob/master/docs/07-blk-the-tile-banks.md)
 (322 or 323 of 328 record boundaries land on a token boundary, against roughly
