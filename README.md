@@ -17,14 +17,21 @@ opinion:
 
 ```
 python tools/sweep.py
-repositories swept: 49  (../pc-* with a docs/, index excluded)
+repositories swept: 51  (../pc-* with a docs/, index excluded)
 
-an MZ header field                       25 of 49
-a DOS-era packer                         16 of 49
+an MZ header field                       27 of 51
+a DOS-era packer                         18 of 51
+bytes past the declared image             5 of 51
+a reader that answered over nothing       5 of 51
 ```
 
 Half the family has independently done MZ header arithmetic and a third of it
 has independently met a DOS packer. That is what a shared document is for.
+
+The population grows: it was 49 when this document was written and is 51 now.
+**Re-run the command rather than quoting this block**, and say which count a
+figure stands on — the numbers above move by one every time a repository is
+added, including the one being written.
 
 **Its primary index is
 [pc-gamelist-doc](https://github.com/vs-sr-dev/pc-gamelist-doc)**, not the
@@ -53,9 +60,9 @@ it says `[1 object]` next to that item and does not round up. Two of the six do.
 | # | item | support |
 |---|---|---|
 | 1 | The tool you have is not the tool you remember | `[5 objects]` — five copies of `exepack.py`, five distinct files, three different command lines |
-| 2 | The declared image is not the file | `[25 of 49]`, and 28 copies of `mzcensus.py` in two versions |
+| 2 | The declared image is not the file | `[27 of 51]`, 28 copies of `mzcensus.py` in two versions, and the first non-zero `overlay past image` `[1 object]` |
 | 3 | After unpacking, the relocation table is the only content check | `[5 objects]`, the defect itself `[1 object]` |
-| 4 | A reader that refuses is worth more than a reader that answers | `[5 objects, 3 families]`, `[8 of 107]` |
+| 4 | A reader that refuses is worth more than a reader that answers | `[5 objects, 3 families]`, `[8 of 107]`, plus `[1 object]` for a census answering over a *filtered* population |
 | 5 | DOS timestamps have two-second granularity | `[22 of 49]`, both halves of the question closed |
 | 6 | State the chance rate before the count, and say which way it runs | `[4 of 49]`, the DOS inversion `[1 object]` |
 

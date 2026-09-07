@@ -161,6 +161,16 @@ make a non-zero one interesting:
 program holds under a third of its own code with the rest in separate overlay
 files.
 
+**The first non-zero one has now been measured** `[1 object]`:
+[pc-hugoshouseofhorrors-doc/docs/04](https://github.com/vs-sr-dev/pc-hugoshouseofhorrors-doc/blob/master/docs/04-the-executable.md)
+reports `overlay past image` **+9** on `HHH.EXE`, 114,419 bytes, against
+**0 on ten executables across the three repositories above**. The nine bytes
+are `36 15 90 22 ef 90 ef 15 22`; they occur nowhere else on that object, at
+nine bytes or at four, against a chance expectation of 0.0002 for a four-byte
+needle in 866,684; and **what they are is not identified**. One object is one
+object: what this row now says is that the quantity is not always 0, not that
+anybody knows what a non-zero value means.
+
 Two consequences worth carrying:
 
 1. **`e_cblp` is the file length modulo 512 and nothing else.** A briefing read
@@ -222,7 +232,7 @@ on where each packer stopped, and **this document cannot say** — the table in
 section 1 says only that four of the five do not restore the head. Run the
 check.
 
-## 4. A reader that refuses is worth more than a reader that answers `[5 objects, 3 families]` `[8 of 107]`
+## 4. A reader that refuses is worth more than a reader that answers `[5 objects, 3 families]` `[8 of 107]` `[+1 object, a new shape]`
 
 The failure, in one sentence: **a reader that does not recognise its input can
 print a complete, confident, correctly formatted summary table computed over a
@@ -236,7 +246,25 @@ population of zero, and exit 0.**
 | [pc-linksthechallengeofgolf-doc/docs/02](https://github.com/vs-sr-dev/pc-linksthechallengeofgolf-doc/blob/master/docs/02-the-technical-sheet.md) | the same scanner | opened 7 of 32 files and still printed a full table of zeroes |
 | [dc-sonicadventure-doc/docs/17](https://github.com/vs-sr-dev/dc-sonicadventure-doc/blob/master/docs/17-corrections.md) | `iso9660.py` | `files : 0` on a GD-ROM, **exit status 0** |
 
-Three of the five are PC objects and two are not, which is why this item is
+**A sixth instance is a different shape and is recorded separately** `[1 object]`.
+On [pc-hugoshouseofhorrors-doc/docs/15](https://github.com/vs-sr-dev/pc-hugoshouseofhorrors-doc/blob/master/docs/15-the-tools.md)
+the failure was not a table over **zero** but a table over a **filtered
+population**: `mzcensus.py` printed `=== the 1 MZ executables ===` on an object
+with **three** MZ files, because it globs `*.EXE` and the other two are called
+`.FON`; every figure in its table was correct and its denominator was true of
+its filter and false of the object. The same run printed
+`third-party software in this folder: 0` on an object carrying two Microsoft
+font modules. On the same object `bmp.py` and `tga.py` read a valid PCX file
+and printed full header reports — `dimensions : -1442840576 x 43520, 170 bpp`
+and `75 x 75, 0 bits per pixel` — both exiting 0.
+
+**A population of one looks like an answer in a way a population of zero does
+not**, and a report over garbage looks like an answer in a way an empty table
+does not. The instruction below — *read the population size, not the exit code*
+— is necessary and, on those two, not sufficient: the population size was 1 and
+it was printed.
+
+Three of the first five are PC objects and two are not, which is why this item is
 stated for the toolbox rather than for DOS: it is not a DOS defect, it is what
 happens when a reader written for one format is pointed at another. The DOS-era
 half is that these objects are small enough that a wrong answer is cheap to
@@ -247,7 +275,10 @@ believe — there is no size cue to make an empty result look implausible.
 - **run every candidate reader for its refusal first**, on an input you know it
   should reject, before you run it on the input you care about;
 - **read the population size, not the exit code.** `0 of 0  AGREE` is not
-  agreement;
+  agreement — and neither is `1 of 1` when the object holds three. **A census
+  should print what it examined next to what it matched**; `protscan.py`'s
+  `files searched : 3 of 107` is a defect that reports itself, `mzcensus.py`'s
+  `the 1` is one that does not;
 - **make the reader raise.** `iso9660.py`'s fix was a control that raises when a
   non-empty root yields no entries — a tool that cannot answer should say so in
   its exit code, and until it does, the population line is the only guard.
