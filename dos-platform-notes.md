@@ -232,7 +232,7 @@ on where each packer stopped, and **this document cannot say** — the table in
 section 1 says only that four of the five do not restore the head. Run the
 check.
 
-## 4. A reader that refuses is worth more than a reader that answers `[5 objects, 3 families]` `[8 of 107]` `[+1 object, a new shape]`
+## 4. A reader that refuses is worth more than a reader that answers `[5 objects, 3 families]` `[8 of 107]` `[+2 objects, a filtered denominator]` `[+1 object, an exception in a data column]`
 
 The failure, in one sentence: **a reader that does not recognise its input can
 print a complete, confident, correctly formatted summary table computed over a
@@ -263,6 +263,37 @@ not**, and a report over garbage looks like an answer in a way an empty table
 does not. The instruction below — *read the population size, not the exit code*
 — is necessary and, on those two, not sufficient: the population size was 1 and
 it was printed.
+
+**A seventh and an eighth instance arrive together, on one object, and the
+seventh completes the sixth** `[1 object]`.
+[pc-finalfantasy7-doc/docs/15](https://github.com/vs-sr-dev/pc-finalfantasy7-doc/blob/master/docs/15-the-tools.md)
+is four raw CD images holding 662 files, of which **268 begin `MZ`**.
+
+* **`mzcensus.py` does both things on that one object.** Pointed at the four
+  `.bin` images it raises `AssertionError: no .EXE found under '...' -- this
+  census has nothing to do` and exits **1**: loud, reasoned, non-zero, correct.
+  Pointed at the extracted tree it prints `=== the 26 MZ executables ===`,
+  because 26 files are called `.EXE` and the other 242 are called `.DLL`,
+  `.DRV`, `.VXD`, `.ACV`, `.CPL`, `.HDI`, `.NEC`, `.X86`, `.MPD`, `.CRL` and
+  `.LRC`. **9.7015 % of the population, in a header that names the object.**
+  So the defect was never *this tool answers over nothing*: it is **the
+  denominator is its filter's and not the object's**, and when the filter is
+  empty the assertion catches it and when it is not, nothing does. Both halves
+  of one tool, on one tree, in one session.
+* **`pecensus.py` prints an exception message in a data column and exits 0.**
+  On the same tree, over 267 PE files, every row reads `fmt n/a`, no linker, no
+  COFF timestamp, and — in the **CompanyName** column — the truncated string
+  `'PE' object has no attribute 'e_lf`. That is a Python `AttributeError`
+  formatted as a table cell, 267 times, with exit status 0. It is a worse shape
+  than the empty table the same tool printed on the raw images: **an empty
+  table says nothing and this one says something false with a column heading
+  over it.**
+
+A fourth instruction follows from the pair, and it is about writing rather than
+running: **a census must print its filter beside its count.** `26 of 268 files
+beginning MZ` would have been true; `the 26 MZ executables` is not. And **a
+value a reader could not compute must not be rendered in the column it would
+have gone in** — a dash, an empty cell or a refusal, never the reason.
 
 Three of the first five are PC objects and two are not, which is why this item is
 stated for the toolbox rather than for DOS: it is not a DOS defect, it is what
