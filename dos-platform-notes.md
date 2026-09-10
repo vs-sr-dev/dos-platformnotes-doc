@@ -178,6 +178,24 @@ Two consequences worth carrying:
    512 is 80, and 80 is `P`
    ([pc-1000miglia-doc/docs/10](https://github.com/vs-sr-dev/pc-1000miglia-doc/blob/master/docs/10-turbo-pascal-six.md)).
    The column proves it for every executable at once rather than one at a time.
+
+   **Amended: it is the LOAD IMAGE modulo 512, and the two are the same number
+   only when there is no slack.** `e_cblp` is defined against the image
+   `(e_cp - 1) * 512 + e_cblp`, not against the file, so on any executable
+   with a payload behind its image the comparison to the file length is
+   mechanically wrong and the column reports a `DIFFER` that means nothing. On
+   `pc-hexxagon-doc`'s `HEXX01.EXE` — 583,613 bytes of which 567,843 are a ZIP
+   sitting behind a 15,770-byte PKLITE'd stub — 15,770 mod 512 is **410**,
+   which is `e_cblp` exactly, while the file-length comparison says 445 and
+   DIFFERs. **The original wording is right for every unpacked program and
+   wrong for every self-extractor**, which is why it survived so long: the
+   objects that break it are the ones with something hidden behind the image,
+   and those are the objects the column gets quoted about. `mzcensus.py` now
+   prints both comparisons — nothing was removed, because repositories quote
+   the old column — and the summary counts both
+   ([pc-hexxagon-doc/docs/10](https://github.com/vs-sr-dev/pc-hexxagon-doc/blob/master/docs/10-the-tools.md),
+   after `pc-rovescino-doc/docs/10` C.3 named the defect and declined to touch
+   it).
 2. **`e_crlc == 0` on a program of any size is a packer**, not a program with no
    fixups. A Turbo Pascal program has hundreds; a packed image declares none,
    because the packer's stub applies them itself.
@@ -492,6 +510,48 @@ of the same shape over the same bytes rather than a closed-form rate. **A rate
 is enough to raise a finding and is not enough to dismiss one.** That is stated
 for the toolbox rather than for DOS, and the era-specific part of it is this
 sentence saying so.
+
+### And the same signature, on the object it exists for `[1 object]`
+
+Two false positives and no recorded true one is a lopsided record for a check,
+and it invites the wrong conclusion — that `LZ91` is simply a bad needle.
+`pc-hexxagon-doc` is the case it is supposed to fire on, and it is here so that
+both halves of the check have an entry.
+
+`HEXX.EXE` (HEXXAGON, Argo Games / Software Creations, 1993) is a 42,309-byte
+real-mode MZ with **`e_crlc == 0`** — rule 2 above, a program of that size
+declaring no fixups — and **zero slack past its declared image**, so the header
+arithmetic agrees and there is no payload to find a four-byte string in.
+
+```
+python tools/sigcount.py Hexxagon --text LZ91 --label "LZEXE 0.91"
+files searched                       : 20        (1,297,836 bytes)
+files BEGINNING with the signature   : 0 of 20
+occurrences ANYWHERE                 : 1, in 1 files
+```
+
+**One occurrence in the whole object, at offset 0x1C**, which is the MZ
+header's reserved area and where LZEXE puts it. The two recorded false
+positives were single hits in 160 MB and 280 MB of non-DOS container, where a
+four-byte needle finds itself; this is a single hit in 1.3 MB, at the defined
+offset, on a DOS program from 1993 whose relocation count already said it was
+packed. **A hit at a computed offset is an identification and a hit anywhere is
+a lead**, which is the distinction `dospack.py` prints in two separate columns
+and which those two false positives are the reason for.
+
+That object also supplies the **second PKLITE specimen** the family's only
+PKLITE unpacker had never had — `PKLITE Copr. **1990-92**` against the 1990
+build the tool was written on — and the outcome is worth one line here because
+it is about a check and not about a game: the unpacker **refused**, which is
+the correct outcome, but reported `no PKLITE signature at 0x1E` about a file
+that has one, because its test was a whole-sentence string compare.
+`mzcensus.py`'s banner table failed the same way from the other side and
+printed `none`. **A signature table that matches whole version strings cannot
+see a build it was not shown**, and `dospack.py`'s wider sweep found it on the
+first run, in the right place. Both were repaired as instances; the class was
+not
+([pc-hexxagon-doc/docs/06](https://github.com/vs-sr-dev/pc-hexxagon-doc/blob/master/docs/06-two-executables.md),
+[pc-hexxagon-doc/docs/10](https://github.com/vs-sr-dev/pc-hexxagon-doc/blob/master/docs/10-the-tools.md)).
 
 The other objects that state a rate before a count:
 [pc-megaman-doc/docs/07](https://github.com/vs-sr-dev/pc-megaman-doc/blob/master/docs/07-blk-the-tile-banks.md)
