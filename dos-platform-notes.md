@@ -200,6 +200,21 @@ Two consequences worth carrying:
    fixups. A Turbo Pascal program has hundreds; a packed image declares none,
    because the packer's stub applies them itself.
 
+   **And the negative control, which three objects of packed binaries never
+   supplied `[1 object]`.** A non-zero `e_crlc` is the rule read the other way:
+   a program that declares relocations is one whose loader still has fixups to
+   apply, which a packer's stub would have consumed. `pc-bianconatale-doc`'s
+   `BN.EXE` (BIANCO NATALE, Tecnoart, 1994) is the family's **first unpacked
+   DOS executable in three objects** — `e_crlc` **83**, whole-file entropy
+   **6.6052** bits/byte where a packed image runs near 8, and `dospack.py`'s
+   33-signature sweep finding no packer in the right place, only a `Borland`
+   banner. It is a 70 KB Turbo-C binary that nobody packed, and it matters here
+   because a rule with only positive cases has never been shown to *not* fire:
+   the three objects before it were a bare program with no packer, then PKLITE
+   and LZEXE together, then a modern repackaging, and none of them exercised the
+   converse. See
+   [pc-bianconatale-doc/docs/06](https://github.com/vs-sr-dev/pc-bianconatale-doc/blob/master/docs/06-the-program.md).
+
 ### 2a. And when `e_lfanew` points at a signature, the arithmetic describes the stub `[2 objects]`
 
 The rule above has a case where it is still correct and no longer *useful*, and
