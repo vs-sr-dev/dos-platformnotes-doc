@@ -215,6 +215,13 @@ Two consequences worth carrying:
    converse. See
    [pc-bianconatale-doc/docs/06](https://github.com/vs-sr-dev/pc-bianconatale-doc/blob/master/docs/06-the-program.md).
 
+   **And the second unpacked one in a row `[1 object]`.** `pc-outrun-doc`'s
+   `OUTRUN.EXE` (OUT RUN, SEGA / Unlimited Software Inc., 1989) is Turbo-C,
+   `e_crlc` **1**, entropy **5.9987**, no packer — the rule read straight this
+   time confirms the converse: its three *sibling* files `CORV/CHEVY/BEETLE.PES`
+   declare `e_crlc` **0** and are packed, EXEPACK'd, and the rule fires on them
+   correctly ([pc-outrun-doc/docs/03](https://github.com/vs-sr-dev/pc-outrun-doc/blob/master/docs/03-three-cars-that-are-engines.md)).
+
 ### 2a. And when `e_lfanew` points at a signature, the arithmetic describes the stub `[2 objects]`
 
 The rule above has a case where it is still correct and no longer *useful*, and
