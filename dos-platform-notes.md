@@ -222,6 +222,22 @@ Two consequences worth carrying:
    declare `e_crlc` **0** and are packed, EXEPACK'd, and the rule fires on them
    correctly ([pc-outrun-doc/docs/03](https://github.com/vs-sr-dev/pc-outrun-doc/blob/master/docs/03-three-cars-that-are-engines.md)).
 
+   **And the positive case, with the packer's marker gone `[1 object]` — so
+   the test is the stub's code, not its signature.** `pc-teenagent-doc`'s
+   `TEENAGNT.EXE` (TEENAGENT, Metropolis Software House, 1994-1995) has
+   `e_crlc` **0**, entropy **7.8498**, and `dospack.py`'s 33-signature sweep
+   reporting **0 of 30 in place** — because LZEXE 0.91's `LZ91` at header
+   offset 1Ch had been replaced by `0C 0A 09 01`, while the 29 bytes at the
+   entry point and the 204 bytes of decoder after them were LZEXE's to the
+   byte, with the ASCII `*FAB*` still at stub offset 0F7h. The rule fired and
+   the marker search said "no packer" on the same file; the file was
+   unpacked from the stub's disassembly (`lzexe.py`) and its 4 KB sibling
+   `SOUNDSET.EXE`, filed by strings as "not packed", was the same packer
+   with the same replaced marker. **A packer can strip its own name; the
+   entry code cannot be stripped without breaking the stub, so identify by
+   the code and report the marker separately** — `dospack.py` now does both
+   ([pc-teenagent-doc/docs/03](https://github.com/vs-sr-dev/pc-teenagent-doc/blob/master/docs/03-the-packer-that-erased-its-name.md)).
+
 ### 2a. And when `e_lfanew` points at a signature, the arithmetic describes the stub `[2 objects]`
 
 The rule above has a case where it is still correct and no longer *useful*, and
@@ -440,6 +456,11 @@ across every file is **one copy operation recorded n times, not n observations**
 ([pc-leathergoddessesofphobos-doc](https://github.com/vs-sr-dev/pc-leathergoddessesofphobos-doc))
 — and an installer or a storefront that rewrites every mtime into a six-minute
 window leaves a filesystem that dates the *download* and nothing else.
+`pc-teenagent-doc` is the case in full: a 1994–1995 DOS game delivered by GOG
+Galaxy inside DOSBox Staging 0.82.2 (with its 1,618-member source ZIP, every
+DOS date 2025-06-17), 431 of 433 mtimes on the install day, two packager logs
+and a build ZIP from November 2025 — six clocks, none the game's, and the
+game's own year printed only inside its LZEXE-packed engine.
 
 ## 6. State the chance rate before quoting the count, and say which way it runs `[4 of 49]` `[+1 object, the rate as a floor]`
 
